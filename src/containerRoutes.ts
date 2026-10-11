@@ -1,11 +1,14 @@
 import { Router } from 'express';
-import { getContainers, removeContainer, startContainer, stopContainer } from './containerController';
+import { getContainerDetails, getContainers, removeContainer, startContainer, stopContainer } from './containerController';
 
 const router = Router();
 
 // Endpoints container
 // GET /api/containers
 router.get('/', getContainers);
+
+// GET /api/containers/id
+router.get('/:id', getContainerDetails);
 
 // POST /api/containers/:id/start
 router.post('/:id/start', startContainer);

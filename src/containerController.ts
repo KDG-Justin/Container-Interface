@@ -1,9 +1,12 @@
-import { Request, Response } from 'express';
-import docker from './config/docker';
-import { z } from 'zod';
+import { Request, Response } from "express";
+import docker from "./config/docker";
+import { z } from "zod";
 
 // GET /api/containers
-export async function getContainers(req: Request, res: Response): Promise<Response> {
+export async function getContainers(
+  req: Request,
+  res: Response,
+): Promise<Response> {
   try {
     const containers = await docker.listContainers({ all: true });
 
@@ -13,17 +16,45 @@ export async function getContainers(req: Request, res: Response): Promise<Respon
       data: containers,
     });
   } catch (error) {
-    console.error('Fout bij ophalen van containers:', error);
+    console.error("Error with getting containers:", error);
 
     return res.status(500).json({
       success: false,
-      message: 'Docker desktop is offline',
+      message: "Docker desktop is offline",
+    });
+  }
+}
+
+// GET /api/containers/id
+export async function getContainerDetails(
+  req: Request,
+  res: Response,
+): Promise<Response> {
+  try {
+    const { id } = req.params;
+    const parsedId = z.string().parse(id);
+    const container = docker.getContainer(parsedId);
+    const data = await container.inspect();
+
+    return res.json({
+      success: true,
+      data: data,
+    });
+  } catch (error) {
+    console.error("Error with getting the container:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Docker desktop is offline",
     });
   }
 }
 
 // POST /api/containers/:id/start
-export async function startContainer(req: Request, res: Response): Promise<Response> {
+export async function startContainer(
+  req: Request,
+  res: Response,
+): Promise<Response> {
   try {
     const { id } = req.params;
     const parsedId = z.string().parse(id);
@@ -39,13 +70,16 @@ export async function startContainer(req: Request, res: Response): Promise<Respo
 
     return res.status(500).json({
       success: false,
-      message: error.reason || error.message || 'Could not start container',
+      message: error.reason || error.message || "Could not start container",
     });
   }
 }
 
 // POST /api/containers/:id/stop
-export async function stopContainer(req: Request, res: Response): Promise<Response> {
+export async function stopContainer(
+  req: Request,
+  res: Response,
+): Promise<Response> {
   try {
     const { id } = req.params;
     const parsedId = z.string().parse(id);
@@ -61,13 +95,16 @@ export async function stopContainer(req: Request, res: Response): Promise<Respon
 
     return res.status(500).json({
       success: false,
-      message: error.reason || error.message || 'Could not stop container',
+      message: error.reason || error.message || "Could not stop container",
     });
   }
 }
 
 // DELETE /api/containers/:id
-export async function removeContainer(req: Request, res: Response): Promise<Response> {
+export async function removeContainer(
+  req: Request,
+  res: Response,
+): Promise<Response> {
   try {
     const { id } = req.params;
     const parsedId = z.string().parse(id);
@@ -83,7 +120,7 @@ export async function removeContainer(req: Request, res: Response): Promise<Resp
 
     return res.status(500).json({
       success: false,
-      message: error.reason || error.message || 'Could not remove container',
+      message: error.reason || error.message || "Could not remove container",
     });
   }
 }
