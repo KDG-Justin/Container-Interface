@@ -4,9 +4,9 @@ import './App.css';
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import { HeaderComponent } from './components/header/HeaderComponent';
 import { DrawerComponent } from './components/header/DrawerComponent';
-import { ContainersScreen } from './screens/ContainersScreen';
-import { HomeScreen } from './screens/HomeScreen';
-
+import { HomeScreen } from './components/screens/HomeScreen';
+import { ContainersScreen } from './components/screens/container/ContainersScreen';
+import { ContainerDetailScreen } from './components/screens/container/ContainerDetailScreen';
 const queryClient = new QueryClient();
 
 function App() {
@@ -20,6 +20,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomeScreen/>} />
               <Route path="/containers" element={<ContainersScreen/>} />
+              <Route path="/containers/:id" element={<ContainerDetailScreen/>} />
               <Route path="/images" element={<div>images</div>} />
               <Route path="/volumes" element={<div>volumes</div>} />
               <Route path="/networks" element={<div>networks</div>} />

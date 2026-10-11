@@ -1,10 +1,14 @@
+import type { MountItem } from "./Mount";
+
 export interface ContainerItem{
-  id: string;              
-  name: string;            
-  image: string;           
-  imageId: string;         
-  state: 'running' | 'exited' | 'paused' | string; 
-  status: string;          
-  ports: string;           
-  created: number;
+  id: string;
+  name: string;
+  image: string;
+  state: string;
+  status: string;
+  created: string;
+  ports: Record<string, any>;
+  mounts: MountItem[];
+  networks: Record<string, any>;
+  env: string[];
 }

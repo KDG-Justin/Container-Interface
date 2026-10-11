@@ -26,6 +26,31 @@ export async function getContainers(){
   }
 }
 
+export async function getContainerDetails(id: string) : Promise<any> {
+  const response = await axios.get(`${API_BASE_URL}/containers/${id}`);
+  const data = response.data.data; 
+
+  return {
+      id: data.Id || id,
+      name: data.Name ? data.Name.replace(/^\//, '') : 'Unnamed',
+      image: data.Config?.Image || 'Unknown',
+      state: data.State?.Status || (data.State?.Running ? 'running' : 'stopped'),
+      status: data.State?.Status || '-',
+      created: data.Created || '',
+      ports: data.NetworkSettings?.Ports || {},
+      mounts: (data.Mounts || []).map((m: any) => ({
+        type: m.Type || 'volume',
+        name: m.Name || '',
+        source: m.Source || m.Name || '-',
+        destination: m.Destination || '-',
+        driver: m.Driver || '',
+        rw: m.RW ?? true,
+      })),
+      networks: data.NetworkSettings?.Networks || {},
+      env: data.Config?.Env || [],
+    };
+}
+
 export async function startContainer(id: string) : Promise<void> {
   await axios.post(`${API_BASE_URL}/containers/${id}/start`);
 }

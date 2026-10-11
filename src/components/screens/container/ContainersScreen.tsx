@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useContainers } from "../hooks/useContainers";
 import {
   Play,
   Square,
@@ -9,9 +8,12 @@ import {
   Trash2,
   Loader2,
 } from "lucide-react";
-import { DeleteConfirmationModal } from "../components/container/DeleteConformationModal";
+import { DeleteConfirmationModal } from "../../../components/container/DeleteConformationModal";
+import { useContainers } from "../../../hooks/useContainers";
+import { useNavigate } from "react-router-dom";
 
 export function ContainersScreen() {
+  const navigate = useNavigate(); 
   const [activeActionId, setActiveActionId] = useState<string>("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [targetContainer, setTargetContainer] = useState<{ id: string; name: string } | null>();
@@ -221,6 +223,7 @@ export function ContainersScreen() {
                         <button
                           title="Inspect details"
                           className="p-2 rounded-lg bg-[#408A71]/40 text-gray-200 hover:bg-[#408A71] hover:text-white transition-colors cursor-pointer"
+                          onClick={() => navigate(`/containers/${container.id}`)}
                         >
                           <Info className="size-4" />
                         </button>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Container, Image, HardDrive, Network, ArrowRight, Activity, Cpu } from 'lucide-react';
-import { useContainers } from '../hooks/useContainers';
+import { useContainers } from '../../hooks/useContainers';
 
 export function HomeScreen() {
   const { containers } = useContainers();
