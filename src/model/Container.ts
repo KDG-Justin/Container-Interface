@@ -7,7 +7,8 @@ export interface ContainerItem{
   state: string;
   status: string;
   created: string;
-  ports: Record<string, any>;
+  ports: string;
+  portsDetail: Record<string, any>;
   mounts: MountItem[];
   networks: Record<string, any>;
   env: string[];

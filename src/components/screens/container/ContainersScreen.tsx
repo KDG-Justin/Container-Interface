@@ -11,11 +11,13 @@ import {
 import { DeleteConfirmationModal } from "../../../components/container/DeleteConformationModal";
 import { useContainers } from "../../../hooks/useContainers";
 import { useNavigate } from "react-router-dom";
+import { LogsModal } from "../../container/LogsModal";
 
 export function ContainersScreen() {
   const navigate = useNavigate(); 
   const [activeActionId, setActiveActionId] = useState<string>("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [logsModalOpen, setLogsModalOpen] = useState(false); 
   const [targetContainer, setTargetContainer] = useState<{ id: string; name: string } | null>();
   const {
     containers,
@@ -52,6 +54,11 @@ export function ContainersScreen() {
     setTargetContainer({ id, name });
     setDeleteModalOpen(true);
   };
+
+  const openLogsModal = (id: string, name:string) => {
+    setTargetContainer({id, name}); 
+    setLogsModalOpen(true); 
+  }
 
   const handleRemove = async () => {
     if (!targetContainer) return;
@@ -152,14 +159,12 @@ export function ContainersScreen() {
                       </div>
                     </td>
 
-                    {/* image */}
                     <td className="px-6 py-4">
                       <span className="font-mono text-xs bg-[#091413]/60 px-2.5 py-1 rounded border border-[#408A71]/30 text-emerald-200">
                         {container.image}
                       </span>
                     </td>
 
-                    {/* ports */}
                     <td className="px-6 py-4 font-mono text-xs text-gray-300">
                       {container.ports !== "-" ? (
                         <span className="text-[#B0E4CC]">
@@ -216,6 +221,7 @@ export function ContainersScreen() {
                         <button
                           title="View logs"
                           className="p-2 rounded-lg bg-[#408A71]/40 text-gray-200 hover:bg-[#408A71] hover:text-white transition-colors cursor-pointer"
+                          onClick={() => openLogsModal(container.id, container.name)}
                         >
                           <Terminal className="size-4" />
                         </button>
@@ -245,6 +251,15 @@ export function ContainersScreen() {
         }}
         onConfirm={handleRemove}
         isDeleting={activeActionId === targetContainer?.id}
+      />
+      <LogsModal
+      isOpen={logsModalOpen}
+      containerName={targetContainer?.name || ''}
+      containerId={targetContainer?.id || ''}
+      onClose={() => {
+        setLogsModalOpen(false); 
+        setTargetContainer(null); 
+      }}
       />
     </div>
   );

@@ -171,9 +171,9 @@ export function ContainerDetailScreen() {
                 Port Bindings
               </span>
               <div>
-                {container.ports && Object.keys(container.ports).length > 0 ? (
-                  Object.keys(container.ports).map((containerPort) => {
-                    const binding = container.ports[containerPort];
+                {container.portsDetail && Object.keys(container.portsDetail).length > 0 ? (
+                  Object.keys(container.portsDetail).map((containerPort) => {
+                    const binding = container.portsDetail[containerPort];
                     const hostPort = binding?.[0]?.HostPort
                       ? `${binding[0].HostPort}:${containerPort}`
                       : containerPort;
@@ -234,7 +234,6 @@ export function ContainerDetailScreen() {
           </div>
         </div>
 
-        {/* 4. Environment Variables */}
         <div className="p-6 rounded-xl border border-[#408A71]/30 bg-[#285A48]/30 space-y-4">
           <div className="flex items-center gap-2 text-[#B0E4CC] font-bold text-base border-b border-[#408A71]/30 pb-3">
             <Layers className="size-5" />

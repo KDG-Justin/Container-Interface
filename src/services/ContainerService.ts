@@ -38,6 +38,7 @@ export async function getContainerDetails(id: string) : Promise<any> {
       status: data.State?.Status || '-',
       created: data.Created || '',
       ports: data.NetworkSettings?.Ports || {},
+      portsDetail: data.NetworkSettings?.Ports || {},
       mounts: (data.Mounts || []).map((m: any) => ({
         type: m.Type || 'volume',
         name: m.Name || '',
@@ -61,4 +62,19 @@ export async function stopContainer(id: string) : Promise<void>{
 
 export async function removeContainer(id: string): Promise<void> {
   await axios.delete(`${API_BASE_URL}/containers/${id}`);
+}
+
+export async function getContainerLogs(id: string): Promise<string> {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/containers/${id}/logs`);
+    
+    const logs = response.data.data || "No logs available.";
+
+    console.log("Response for container:", id, logs);
+
+    return logs;
+  } catch (error) {
+    console.error(`Failed to fetch logs for container ${id}:`, error);
+    throw error;
+  }
 }
