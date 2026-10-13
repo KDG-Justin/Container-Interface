@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getContainerDetails, getContainers, removeContainer, startContainer, stopContainer } from './containerController';
+import { getContainerDetails, getContainerLogs, getContainers, removeContainer, startContainer, stopContainer } from './containerController';
 
 const router = Router();
 
@@ -15,6 +15,9 @@ router.post('/:id/start', startContainer);
 
 // POST /api/containers/:id/stop
 router.post('/:id/stop', stopContainer);
+
+// GET /apu/containers/:id/logs
+router.get('/:id/logs', getContainerLogs);
 
 // DELETE /api/containers/:id
 router.delete('/:id', removeContainer);

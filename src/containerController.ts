@@ -100,6 +100,43 @@ export async function stopContainer(
   }
 }
 
+// GET /api/containers/:id/logs
+export async function getContainerLogs(
+  req: Request,
+  res: Response,
+): Promise<Response> {
+  try {
+    const { id } = req.params;
+    const parsedId = z.string().parse(id);
+    const container = docker.getContainer(parsedId);
+
+    // alleen stdout en stderr + timestamps in de logs genomen
+    const logsBuffer = await container.logs({
+      stdout: true,
+      stderr: true,
+      timestamps: true,
+      tail: 100, // laatste 100 regels
+    });
+
+    // Dockerode geeft een Buffer terug
+    const logs = logsBuffer.toString("utf-8");
+
+    return res.json({
+      success: true,
+      data: logs,
+    });
+  } catch (error: any) {
+    console.error(
+      `Error with getting logs from container ${req.params.id}:`,
+      error,
+    );
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Could not get container logs.",
+    });
+  }
+}
+
 // DELETE /api/containers/:id
 export async function removeContainer(
   req: Request,
