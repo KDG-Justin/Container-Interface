@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getContainerLogs } from "../services/ContainerService";
+import { getContainerLogs } from "../../services/ContainerService";
+
 
 
 

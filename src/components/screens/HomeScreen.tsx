@@ -1,43 +1,55 @@
-import { Link } from 'react-router-dom';
-import { Container, Image, HardDrive, Network, ArrowRight, Activity, Cpu } from 'lucide-react';
-import { useContainers } from '../../hooks/useContainers';
+import { Link } from "react-router-dom";
+import {
+  Container,
+  Image,
+  HardDrive,
+  Network,
+  ArrowRight,
+  Activity,
+  Cpu,
+} from "lucide-react";
+import { useContainers } from "../../hooks/container/useContainers";
 
 export function HomeScreen() {
   const { containers } = useContainers();
 
   const totalContainers = containers?.length || 0;
-  const runningContainers = containers?.filter((c) => c.state === 'running').length || 0;
+  const runningContainers =
+    containers?.filter((c) => c.state === "running").length || 0;
 
   const navigationCards = [
     {
-      title: 'Containers',
-      description: 'View active and stopped containers, inspect logs, and manage their lifecycle.',
-      path: '/containers',
+      title: "Containers",
+      description:
+        "View active and stopped containers, inspect logs, and manage their lifecycle.",
+      path: "/containers",
       icon: Container,
       badge: `${runningContainers} / ${totalContainers} Running`,
     },
     {
-      title: 'Images',
-      description: 'Manage local Docker images, inspect tags, sizes, and clean up unused versions.',
-      path: '/images',
+      title: "Images",
+      description:
+        "Manage local Docker images, inspect tags, sizes, and clean up unused versions.",
+      path: "/images",
       icon: Image,
     },
     {
-      title: 'Volumes',
-      description: 'Inspect attached storage volumes and check which containers are using them.',
-      path: '/volumes',
+      title: "Volumes",
+      description:
+        "Inspect attached storage volumes and check which containers are using them.",
+      path: "/volumes",
       icon: HardDrive,
     },
     {
-      title: 'Networks',
-      description: 'Inspect virtual Docker networks and active port bindings.',
-      path: '/networks',
+      title: "Networks",
+      description: "Inspect virtual Docker networks and active port bindings.",
+      path: "/networks",
       icon: Network,
     },
   ];
 
   return (
-    <div className="p-6 space-y-8 max-w-7xl mx-auto">
+    <div className="p-6 space-y-8 max-w-7xl mx-auto overflow-y-auto no-scrollbar h-[85vh]">
       {/* header */}
       <div className="p-8 rounded-2xl bg-gradient-to-r from-[#285A48] to-[#091413] border border-[#408A71]/40 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2 max-w-2xl">
@@ -49,7 +61,9 @@ export function HomeScreen() {
             Docker Container Interface
           </h1>
           <p className="text-gray-300 text-sm md:text-base leading-relaxed">
-            Welcome to your personal Docker dashboard. Easily manage your local containers, dependencies, images, and volumes without needing the CLI.
+            Welcome to your personal Docker dashboard. Easily manage your local
+            containers, dependencies, images, and volumes without needing the
+            CLI.
           </p>
         </div>
 
@@ -68,7 +82,9 @@ export function HomeScreen() {
             <Container className="size-6" />
           </div>
           <div>
-            <p className="text-xs text-gray-400 font-medium">Total Containers</p>
+            <p className="text-xs text-gray-400 font-medium">
+              Total Containers
+            </p>
             <p className="text-2xl font-bold text-white">{totalContainers}</p>
           </div>
         </div>
@@ -79,7 +95,9 @@ export function HomeScreen() {
           </div>
           <div>
             <p className="text-xs text-gray-400 font-medium">Running</p>
-            <p className="text-2xl font-bold text-emerald-400">{runningContainers}</p>
+            <p className="text-2xl font-bold text-emerald-400">
+              {runningContainers}
+            </p>
           </div>
         </div>
       </div>

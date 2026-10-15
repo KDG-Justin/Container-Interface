@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useContainer } from "../../../hooks/useContainer";
 import {
   ArrowLeft,
   Clock,
@@ -13,6 +12,7 @@ import {
   RefreshCcw,
 } from "lucide-react";
 import { useState } from "react";
+import { useContainer } from "../../../hooks/container/useContainer";
 
 export function ContainerDetailScreen() {
   const { id } = useParams<string>();

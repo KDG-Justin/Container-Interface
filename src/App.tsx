@@ -7,6 +7,7 @@ import { DrawerComponent } from './components/header/DrawerComponent';
 import { HomeScreen } from './components/screens/HomeScreen';
 import { ContainersScreen } from './components/screens/container/ContainersScreen';
 import { ContainerDetailScreen } from './components/screens/container/ContainerDetailScreen';
+import { ImagesScreen } from './components/screens/image/ImageScreen';
 const queryClient = new QueryClient();
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
               <Route path="/" element={<HomeScreen/>} />
               <Route path="/containers" element={<ContainersScreen/>} />
               <Route path="/containers/:id" element={<ContainerDetailScreen/>} />
-              <Route path="/images" element={<div>images</div>} />
+              <Route path="/images" element={<ImagesScreen/>} />
               <Route path="/volumes" element={<div>volumes</div>} />
               <Route path="/networks" element={<div>networks</div>} />
             </Routes>

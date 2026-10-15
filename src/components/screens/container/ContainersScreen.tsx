@@ -9,16 +9,19 @@ import {
   Loader2,
 } from "lucide-react";
 import { DeleteConfirmationModal } from "../../../components/container/DeleteConformationModal";
-import { useContainers } from "../../../hooks/useContainers";
+import { useContainers } from "../../../hooks/container/useContainers";
 import { useNavigate } from "react-router-dom";
 import { LogsModal } from "../../container/LogsModal";
 
 export function ContainersScreen() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [activeActionId, setActiveActionId] = useState<string>("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [logsModalOpen, setLogsModalOpen] = useState(false); 
-  const [targetContainer, setTargetContainer] = useState<{ id: string; name: string } | null>();
+  const [logsModalOpen, setLogsModalOpen] = useState(false);
+  const [targetContainer, setTargetContainer] = useState<{
+    id: string;
+    name: string;
+  } | null>();
   const {
     containers,
     isLoading,
@@ -55,10 +58,10 @@ export function ContainersScreen() {
     setDeleteModalOpen(true);
   };
 
-  const openLogsModal = (id: string, name:string) => {
-    setTargetContainer({id, name}); 
-    setLogsModalOpen(true); 
-  }
+  const openLogsModal = (id: string, name: string) => {
+    setTargetContainer({ id, name });
+    setLogsModalOpen(true);
+  };
 
   const handleRemove = async () => {
     if (!targetContainer) return;
@@ -66,12 +69,12 @@ export function ContainersScreen() {
     try {
       setActiveActionId(targetContainer.id);
       await removeContainer(targetContainer.id);
-      setDeleteModalOpen(false); 
+      setDeleteModalOpen(false);
       setTargetContainer(null);
     } catch (err) {
-      console.error('Failed to remove container:', err);
+      console.error("Failed to remove container:", err);
     } finally {
-      setActiveActionId('');
+      setActiveActionId("");
     }
   };
 
@@ -221,7 +224,9 @@ export function ContainersScreen() {
                         <button
                           title="View logs"
                           className="p-2 rounded-lg bg-[#408A71]/40 text-gray-200 hover:bg-[#408A71] hover:text-white transition-colors cursor-pointer"
-                          onClick={() => openLogsModal(container.id, container.name)}
+                          onClick={() =>
+                            openLogsModal(container.id, container.name)
+                          }
                         >
                           <Terminal className="size-4" />
                         </button>
@@ -229,7 +234,9 @@ export function ContainersScreen() {
                         <button
                           title="Inspect details"
                           className="p-2 rounded-lg bg-[#408A71]/40 text-gray-200 hover:bg-[#408A71] hover:text-white transition-colors cursor-pointer"
-                          onClick={() => navigate(`/containers/${container.id}`)}
+                          onClick={() =>
+                            navigate(`/containers/${container.id}`)
+                          }
                         >
                           <Info className="size-4" />
                         </button>
@@ -244,7 +251,7 @@ export function ContainersScreen() {
       )}
       <DeleteConfirmationModal
         isOpen={deleteModalOpen}
-        containerName={targetContainer?.name || ''}
+        containerName={targetContainer?.name || ""}
         onClose={() => {
           setDeleteModalOpen(false);
           setTargetContainer(null);
@@ -253,13 +260,13 @@ export function ContainersScreen() {
         isDeleting={activeActionId === targetContainer?.id}
       />
       <LogsModal
-      isOpen={logsModalOpen}
-      containerName={targetContainer?.name || ''}
-      containerId={targetContainer?.id || ''}
-      onClose={() => {
-        setLogsModalOpen(false); 
-        setTargetContainer(null); 
-      }}
+        isOpen={logsModalOpen}
+        containerName={targetContainer?.name || ""}
+        containerId={targetContainer?.id || ""}
+        onClose={() => {
+          setLogsModalOpen(false);
+          setTargetContainer(null);
+        }}
       />
     </div>
   );

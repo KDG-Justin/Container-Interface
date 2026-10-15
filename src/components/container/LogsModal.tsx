@@ -1,7 +1,7 @@
 import { X, Terminal, RefreshCw } from 'lucide-react';
-import { ContainerLogs } from '../../utils/RenderContainerLogs';
-import { useContainerLogs } from '../../hooks/useContainerLogs';
+import { ContainerLogs } from './RenderContainerLogs';
 import { useEffect, useRef } from 'react';
+import { useContainerLogs } from '../../hooks/container/useContainerLogs';
 
 
 
