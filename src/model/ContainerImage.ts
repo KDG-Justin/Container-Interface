@@ -1,3 +1,5 @@
+import type { ImageHistory } from "./ImageHistory";
+
 export interface ContainerImage {
   id: string;
   shortId: string;
@@ -8,4 +10,8 @@ export interface ContainerImage {
     id: string;
     name: string;
   }>;
+  architecture?: string; 
+  os?: string, 
+  dockerVersion?: string; 
+  history: ImageHistory[]; 
 }

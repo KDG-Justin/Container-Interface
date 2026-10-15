@@ -1,8 +1,10 @@
-import { RefreshCw, HardDrive, SearchXIcon } from "lucide-react";
+import { RefreshCw, HardDrive } from "lucide-react";
 import { useImages } from "../../../hooks/useImages";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function ImagesScreen() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const { images, isLoading, isError } = useImages();
 
@@ -58,6 +60,7 @@ export function ImagesScreen() {
                 <tr
                   key={img.id}
                   className="hover:bg-[#408A71]/15 transition-colors"
+                  onClick={() => navigate(`/images/${img.id}`)}
                 >
                   <td className="px-6 py-4">
                     <div className="space-y-1">

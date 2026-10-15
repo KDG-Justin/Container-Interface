@@ -18,6 +18,7 @@ export function ContainersScreen() {
   const [activeActionId, setActiveActionId] = useState<string>("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [logsModalOpen, setLogsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [targetContainer, setTargetContainer] = useState<{
     id: string;
     name: string;
@@ -78,6 +79,11 @@ export function ContainersScreen() {
     }
   };
 
+  const filteredContainers = containers?.filter((container) => {
+    const matchesSearch = container.name.toLowerCase().includes(searchTerm.toLowerCase()) 
+    return matchesSearch;
+  });
+
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between">
@@ -111,6 +117,15 @@ export function ContainersScreen() {
 
       {!isLoading && !isError && containers && containers.length > 0 && (
         <div className="overflow-hidden rounded-xl border border-[#408A71]/40 bg-[#285A48]/30 backdrop-blur-sm">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search container by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full md:w-80 px-4 py-2.5 pl-10 rounded-xl bg-[#285A48]/30 border border-[#408A71]/40 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#B0E4CC] transition-colors"
+            />
+          </div>
           <table className="w-full text-left text-sm text-gray-200">
             <thead className="bg-[#285A48] text-xs uppercase tracking-wider text-[#B0E4CC] border-b border-[#408A71]/40">
               <tr>
@@ -123,7 +138,7 @@ export function ContainersScreen() {
             </thead>
 
             <tbody className="divide-y divide-[#408A71]/20">
-              {containers.map((container) => {
+              {filteredContainers?.map((container) => {
                 const isRunning = container.state === "running";
                 const isProcessing = activeActionId === container.id;
 
