@@ -1,6 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import router from './containerRoutes';
+import express from "express";
+import cors from "cors";
+import containerRouter from "./routes/containerRoutes";
+import imageRouter from "./routes/imageRoutes"
 
 const app = express();
 const PORT = 3000;
@@ -8,15 +9,11 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/containers', router);
+app.use("/api/containers", containerRouter);
+app.use("/api/images", imageRouter); 
 //for later de images, miss volumes en natuurlijk netwerken
-// app.use('/api/images', imageRoutes);
 // app.use('/api/volumes', volumeRoutes);
 // app.use('/api/networks', networkRoutes);
-
-app.get('/', (req, res) => {
-  res.send('To Get All Container Data: /api/containers');
-});
 app.listen(PORT, () => {
   console.log(`Server runs on http://localhost:${PORT}`);
 });

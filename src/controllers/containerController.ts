@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import docker from "./config/docker";
+import docker from "../config/docker";
 import { z } from "zod";
 
 // GET /api/containers
