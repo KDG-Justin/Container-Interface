@@ -32,9 +32,25 @@ export async function getContainers(
   } catch (error) {
     console.error("Error with getting containers:", error);
 
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such container"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Container not found",
+      });
+    }
+
     return res.status(500).json({
       success: false,
-      message: "Docker desktop is offline",
+      message: "Docker service is unavailable",
     });
   }
 }
@@ -77,11 +93,34 @@ export async function getContainerDetails(
       data: formattedContainer,
     });
   } catch (error) {
-    console.error("Error with getting the container:", error);
+    console.error("Error with getting container details:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid container ID",
+      });
+    }
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such container"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Container not found",
+      });
+    }
 
     return res.status(500).json({
       success: false,
-      message: "Docker desktop is offline",
+      message: "Docker service is unavailable",
     });
   }
 }
@@ -101,12 +140,35 @@ export async function startContainer(
       success: true,
       message: `Container ${id} successfully started`,
     });
-  } catch (error: any) {
-    console.error(`Error with starting container ${req.params.id}:`, error);
+  } catch (error) {
+    console.error("Error with starting the container:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid container ID",
+      });
+    }
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such container"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Container not found",
+      });
+    }
 
     return res.status(500).json({
       success: false,
-      message: error.reason || error.message || "Could not start container",
+      message: "Docker service is unavailable",
     });
   }
 }
@@ -126,12 +188,35 @@ export async function stopContainer(
       success: true,
       message: `Container ${id} succesfully stopped`,
     });
-  } catch (error: any) {
-    console.error(`Error with stopping container ${req.params.id}:`, error);
+  } catch (error) {
+    console.error("Error with stopping the container:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid container ID",
+      });
+    }
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such container"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Container not found",
+      });
+    }
 
     return res.status(500).json({
       success: false,
-      message: error.reason || error.message || "Could not stop container",
+      message: "Docker service is unavailable",
     });
   }
 }
@@ -161,14 +246,35 @@ export async function getContainerLogs(
       success: true,
       data: logs,
     });
-  } catch (error: any) {
-    console.error(
-      `Error with getting logs from container ${req.params.id}:`,
-      error,
-    );
+  } catch (error) {
+    console.error("Error with getting the container logs:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid container ID",
+      });
+    }
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such container"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Container not found",
+      });
+    }
+
     return res.status(500).json({
       success: false,
-      message: error.message || "Could not get container logs.",
+      message: "Docker service is unavailable",
     });
   }
 }
@@ -188,12 +294,35 @@ export async function removeContainer(
       success: true,
       message: `Container ${id} successfully removed`,
     });
-  } catch (error: any) {
-    console.error(`Error with removing container ${req.params.id}:`, error);
+  } catch (error) {
+    console.error("Error with removing the container:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid container ID",
+      });
+    }
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such container"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Container not found",
+      });
+    }
 
     return res.status(500).json({
       success: false,
-      message: error.reason || error.message || "Could not remove container",
+      message: "Docker service is unavailable",
     });
   }
 }

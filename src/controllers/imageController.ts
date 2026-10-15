@@ -42,11 +42,28 @@ export async function getImages(
       success: true,
       data: imageMap,
     });
-  } catch (error: any) {
-    console.error("Error with getting images:", error);
+  } catch (error) {
+    console.error("Error with getting the images:", error);
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such image"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Image not found",
+      });
+    }
+
     return res.status(500).json({
       success: false,
-      message: error.message || "Could not get images",
+      message: "Docker service is unavailable",
     });
   }
 }
@@ -96,11 +113,35 @@ export async function getImageDetails(req: Request, res: Response): Promise<Resp
         history: history,
       },
     });
-  } catch (error: any) {
-    console.error(`Error with getting details of container ${req.params.id}:`, error);
+  } catch (error) {
+    console.error("Error with getting the image:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid image ID",
+      });
+    }
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such image"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Image not found",
+      });
+    }
+
     return res.status(500).json({
       success: false,
-      message: error.message || 'Could not get details of container',
+      message: "Docker service is unavailable",
     });
   }
 }
