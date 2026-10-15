@@ -10,10 +10,24 @@ export async function getContainers(
   try {
     const containers = await docker.listContainers({ all: true });
 
+    const formattedContainers = containers.map((container) => ({
+      id: container.Id.substring(0, 12),
+      name: container.Names?.[0]
+        ? container.Names[0].replace(/^\//, "")
+        : "Unnamed",
+      image: container.Image,
+      imageId: container.ImageID,
+      state: container.State,
+      status: container.Status,
+      ports:
+        container.Ports?.filter((p) => p.PublicPort)
+          .map((p) => `${p.PublicPort}:${p.PrivatePort}`)
+          .join(", ") || "-",
+      created: container.Created,
+    }));
+
     return res.json({
-      success: true,
-      count: containers.length,
-      data: containers,
+      data: formattedContainers,
     });
   } catch (error) {
     console.error("Error with getting containers:", error);
@@ -25,7 +39,6 @@ export async function getContainers(
   }
 }
 
-// GET /api/containers/id
 export async function getContainerDetails(
   req: Request,
   res: Response,
@@ -33,12 +46,35 @@ export async function getContainerDetails(
   try {
     const { id } = req.params;
     const parsedId = z.string().parse(id);
+
     const container = docker.getContainer(parsedId);
     const data = await container.inspect();
 
+    const formattedContainer = {
+      id: data.Id || parsedId,
+      name: data.Name ? data.Name.replace(/^\//, "") : "Unnamed",
+      image: data.Config?.Image || "Unknown",
+      state:
+        data.State?.Status || (data.State?.Running ? "running" : "stopped"),
+      status: data.State?.Status || "-",
+      created: data.Created || "",
+      ports: data.NetworkSettings?.Ports || {},
+      portsDetail: data.NetworkSettings?.Ports || {},
+      mounts: (data.Mounts || []).map((m) => ({
+        type: m.Type || "volume",
+        name: m.Name || "",
+        source: m.Source || m.Name || "-",
+        destination: m.Destination || "-",
+        driver: m.Driver || "",
+        rw: m.RW ?? true,
+      })),
+      networks: data.NetworkSettings?.Networks || {},
+      env: data.Config?.Env || [],
+    };
+
     return res.json({
       success: true,
-      data: data,
+      data: formattedContainer,
     });
   } catch (error) {
     console.error("Error with getting the container:", error);
