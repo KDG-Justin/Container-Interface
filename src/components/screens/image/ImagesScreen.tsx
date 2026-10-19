@@ -1,5 +1,5 @@
 import { RefreshCw, HardDrive } from "lucide-react";
-import { useImages } from "../../../hooks/useImages";
+import { useImages } from "../../../hooks/image/useImages";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -79,7 +79,6 @@ export function ImagesScreen() {
                     {img.shortId}
                   </td>
 
-                  {/* Size */}
                   <td className="px-6 py-4 font-mono text-xs text-[#B0E4CC]">
                     {img.size}
                   </td>

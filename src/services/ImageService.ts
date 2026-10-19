@@ -16,10 +16,20 @@ export async function getImages(): Promise<ContainerImage[]> {
 
 export async function getImage(id: string): Promise<ContainerImage>{
   try {
-    const response = await axios.get(`${API_BASE_URL}/images/${id}`);
+    const response = await axios.get(`${API_BASE_URL}/images/${encodeURIComponent(id)}`);
     return response.data.data;
   } catch (error) {
     console.error('Failed to fetch image:', error);
+    throw error;
+  }
+}
+
+
+export async function removeImage(id: string): Promise<void> {
+  try {
+    await axios.delete(`${API_BASE_URL}/images/${encodeURIComponent(id)}`);
+  } catch (error) {
+    console.error(`Failed to remove image `, error);
     throw error;
   }
 }

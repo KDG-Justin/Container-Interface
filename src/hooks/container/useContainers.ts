@@ -47,6 +47,6 @@ export function useContainers() {
     isLoading,
     startContainer: startMutation.mutateAsync,
     stopContainer: stopMutation.mutateAsync,
-    removeContainer: removeMutation.mutateAsync,
+    removeContainer: removeMutation.mutateAsync
   };
 }

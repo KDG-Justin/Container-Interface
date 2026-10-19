@@ -12,19 +12,21 @@ import {
   Terminal,
   Trash2
 } from 'lucide-react';
-import { useImage } from '../../../hooks/useImage';
+import { useImage } from '../../../hooks/image/useImage';
 
 
 export function ImageDetailScreen() {
   const { id } = useParams<string>();
-  const {image, isLoading, isError} = useImage(id!);
+  const {image, isLoading, isError, removeImage} = useImage(id!);
   const navigate = useNavigate();
   const [showId, setShowId] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   
   const handleDeleteImage = async () => {
-    
+    removeImage(id!); 
+    setIsDeleting(true); 
+    navigate(`/images`); 
   };
 
   if (isLoading) {
@@ -152,7 +154,7 @@ export function ImageDetailScreen() {
           </div>
           <div className="flex flex-wrap gap-2">
             {image.containers && image.containers.length > 0 ? (
-              image.containers.map(c => (
+              image.containers.map((c: { id: string, name: string }) => (
                 <span key={c.id} className="px-3 py-1.5 rounded-lg bg-[#091413]/60 border border-[#408A71]/30 text-xs font-mono text-[#B0E4CC]">
                   {c.name}
                 </span>

@@ -15,7 +15,9 @@ export async function getContainers() {
 
 export async function getContainerDetails(id: string): Promise<any> {
   try {
-    const response = await axios.get(`${API_BASE_URL}/containers/${id}`);
+    const response = await axios.get(
+      `${API_BASE_URL}/containers/${encodeURIComponent(id)}`,
+    );
 
     return response.data.data;
   } catch (error) {
@@ -25,25 +27,49 @@ export async function getContainerDetails(id: string): Promise<any> {
 }
 
 export async function startContainer(id: string): Promise<void> {
-  await axios.post(`${API_BASE_URL}/containers/${id}/start`);
+  try {
+    await axios.post(
+      `${API_BASE_URL}/containers/${encodeURIComponent(id)}/start`,
+    );
+  } catch (error) {
+    console.error(`Failed to start container `, error);
+    throw error;
+  }
 }
 
 export async function stopContainer(id: string): Promise<void> {
-  await axios.post(`${API_BASE_URL}/containers/${id}/stop`);
+  try {
+    await axios.post(
+      `${API_BASE_URL}/containers/${encodeURIComponent(id)}/stop`,
+    );
+  } catch (error) {
+    console.error(`Failed to stop container `, error);
+    throw error;
+  }
 }
 
 export async function removeContainer(id: string): Promise<void> {
-  await axios.delete(`${API_BASE_URL}/containers/${id}`);
+  try {
+    await axios.delete(`${API_BASE_URL}/containers/${encodeURIComponent(id)}`);
+  } catch (error) {
+    console.error(`Failed to remove container `, error);
+    throw error;
+  }
 }
 
 export async function getContainerLogs(id: string): Promise<string> {
   try {
-    const response = await axios.get(`${API_BASE_URL}/containers/${id}/logs`);
+    const response = await axios.get(
+      `${API_BASE_URL}/containers/${encodeURIComponent(id)}/logs`,
+    );
     const logs = response.data.data || "No logs available.";
 
     return logs;
   } catch (error) {
-    console.error(`Failed to fetch logs for container ${id}:`, error);
+    console.error(
+      `Failed to fetch logs for container ${encodeURIComponent(id)}:`,
+      error,
+    );
     throw error;
   }
 }
