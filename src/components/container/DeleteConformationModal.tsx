@@ -1,8 +1,8 @@
-import { AlertTriangle, X } from 'lucide-react';
+import { AlertTriangle, X } from "lucide-react";
 
 interface DeleteConfirmationModalProps {
   isOpen: boolean;
-  containerName: string;
+  name: string;
   onClose: () => void;
   onConfirm: () => void;
   isDeleting?: boolean;
@@ -10,7 +10,7 @@ interface DeleteConfirmationModalProps {
 
 export function DeleteConfirmationModal({
   isOpen,
-  containerName,
+  name,
   onClose,
   onConfirm,
   isDeleting = false,
@@ -26,8 +26,10 @@ export function DeleteConfirmationModal({
               <AlertTriangle className="size-6" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">Remove Container</h3>
-              <p className="text-xs text-gray-300">This action cannot be undone.</p>
+              <h3 className="text-lg font-bold text-white">Remove docker resource</h3>
+              <p className="text-xs text-gray-300">
+                This action cannot be undone.
+              </p>
             </div>
           </div>
 
@@ -42,13 +44,13 @@ export function DeleteConfirmationModal({
 
         {/*content */}
         <p className="text-sm text-gray-200 leading-relaxed">
-          Are you sure you want to remove container{' '}
+          Are you sure you want to remove {" "}
           <span className="font-semibold text-[#B0E4CC] font-mono px-1.5 py-0.5 rounded bg-[#091413]/60 border border-[#408A71]/30">
-            {containerName}
+            {name}
           </span>
           ?
         </p>
-        
+
         <div className="flex items-center justify-end gap-3 pt-2">
           <button
             type="button"
@@ -65,10 +67,9 @@ export function DeleteConfirmationModal({
             disabled={isDeleting}
             className="px-4 py-2.5 text-sm font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-lg transition-all disabled:opacity-50"
           >
-            {isDeleting ? 'Removing...' : 'Yes, Remove'}
+            {isDeleting ? "Removing..." : "Yes, Remove"}
           </button>
         </div>
-
       </div>
     </div>
   );
