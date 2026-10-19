@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getImageDetails, getImages } from "../controllers/imageController";
+import { getImageDetails, getImages, removeImage } from "../controllers/imageController";
 
 const imageRouter = Router();
 
@@ -10,6 +10,9 @@ imageRouter.get('/', getImages);
 
 // GET /api/image/:id
 imageRouter.get('/:id', getImageDetails); 
+
+// DELETE /api/image/:id
+imageRouter.delete("/:id", removeImage);
 
 
 export default imageRouter; 
