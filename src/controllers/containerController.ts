@@ -236,7 +236,7 @@ export async function getContainerLogs(
       stdout: true,
       stderr: true,
       timestamps: true,
-      tail: 100, // laatste 100 regels
+      tail: 100,
     });
 
     // Dockerode geeft een Buffer terug
