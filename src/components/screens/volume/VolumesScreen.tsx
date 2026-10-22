@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useVolumes } from "../../../hooks/volume/useVolumes";
 import { Database, HardDrive, RefreshCw, Trash2 } from "lucide-react";
 import { DeleteConfirmationModal } from "../../container/DeleteConformationModal";
+import { useNavigate } from "react-router-dom";
 
 export function VolumesScreen() {
   const {volumes, isLoading, isError, removeVolume} = useVolumes();
@@ -9,6 +10,7 @@ export function VolumesScreen() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [targetVolume, setTargetVolume] = useState<string>("");
+  const navigate = useNavigate();
 
   const filteredVolumes = volumes?.filter((vol) => {
     const matchesSearch = vol.name
@@ -91,6 +93,7 @@ export function VolumesScreen() {
                   <tr
                     key={vol.name}
                     className="hover:bg-[#408A71]/15 transition-colors"
+                    onClick={() => navigate(`/volumes/${vol.name}`)}
                   >
                     <td className="px-6 py-4 font-mono font-semibold text-white text-xs">
                       <div className="flex items-center gap-2">

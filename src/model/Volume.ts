@@ -7,7 +7,6 @@ export interface ContainerVolume {
   rw: boolean;
   driver: string;
   mountpoint: string;
-  created: string;
   containers: Array<{
     id: string;
     name: string;
