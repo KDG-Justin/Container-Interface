@@ -185,10 +185,8 @@ export function ContainersScreen() {
                       )}
                     </td>
 
-                    {/* action buttons */}
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-2">
-                        {/* Loading Spinner during mutation */}
                         {isProcessing ? (
                           <div className="p-2 text-[#B0E4CC]">
                             <Loader2 className="size-4 animate-spin" />
@@ -213,7 +211,6 @@ export function ContainersScreen() {
                               </button>
                             )}
 
-                            {/* Only for stopped container */}
                             {!isRunning && (
                               <button
                                 onClick={() =>

@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { useVolumes } from "../../../hooks/volume/useVolumes";
-import { Database, HardDrive, RefreshCw } from "lucide-react";
+import { Database, HardDrive, RefreshCw, Trash2 } from "lucide-react";
+import { DeleteConfirmationModal } from "../../container/DeleteConformationModal";
 
 export function VolumesScreen() {
-  const { volumes, isLoading, isError } = useVolumes();
+  const {volumes, isLoading, isError, removeVolume} = useVolumes();
   const [searchTerm, setSearchTerm] = useState("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [targetVolume, setTargetVolume] = useState<string>("");
 
   const filteredVolumes = volumes?.filter((vol) => {
     const matchesSearch = vol.name
@@ -12,6 +16,31 @@ export function VolumesScreen() {
       .includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
+
+
+  const openDeleteModal = (name: string) => {
+    setTargetVolume(name); 
+    setDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setTargetVolume(""); 
+    setIsDeleting(false); 
+    setDeleteModalOpen(false); 
+  }
+
+  const handleRemove = async () => {
+    if (!targetVolume) return;
+
+    try {
+      setIsDeleting(true); 
+      await removeVolume(targetVolume);
+      setTargetVolume(""); 
+      setDeleteModalOpen(false);
+    } catch (err) {
+      console.error("Failed to remove container:", err);
+    } 
+  };
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -51,6 +80,7 @@ export function VolumesScreen() {
                 <th className="px-6 py-4">Driver</th>
                 <th className="px-6 py-4">Mountpoint</th>
                 <th className="px-6 py-4">Connected Containers</th>
+                <th className="px-6 py-4">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#408A71]/20">
@@ -103,6 +133,22 @@ export function VolumesScreen() {
                         </span>
                       )}
                     </td>
+
+                    <td className="px-6 py-4 text-right whitespace-nowrap">
+                      {!inUse ? (
+                        <button
+                          onClick={() => openDeleteModal(vol.name)}
+                          title="Remove volume"
+                          className="p-2 rounded-lg bg-rose-900/40 text-rose-300 hover:bg-rose-600 hover:text-white transition-colors cursor-pointer"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      ) : (
+                        <span className="text-[11px] text-gray-400 italic">
+                          In use
+                        </span>
+                      )}
+                    </td>
                   </tr>
                 );
               })}
@@ -114,10 +160,17 @@ export function VolumesScreen() {
           <HardDrive className="size-10 mx-auto text-[#408A71] mb-2" />
           <p className="font-medium text-gray-300">No volumes found</p>
           <p className="text-xs text-gray-500 mt-1">
-            There are no Docker volumes matching your query.
+            There are no Docker volumes.
           </p>
         </div>
       )}
+      <DeleteConfirmationModal
+        isOpen={deleteModalOpen}
+        name={targetVolume || ""}
+        onClose={closeDeleteModal}
+        onConfirm={handleRemove}
+        isDeleting={isDeleting}
+      />
     </div>
   );
 }
