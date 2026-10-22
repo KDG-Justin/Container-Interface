@@ -73,7 +73,7 @@ export async function removeVolume(req: Request, res: Response): Promise<Respons
 
     return res.json({
       success: true,
-      message: `Volume ${name} succesvol verwijderd`,
+      message: `Volume ${name} removed`,
     });
   } catch (error) {
     console.error("Error with removing the volume:", error);
