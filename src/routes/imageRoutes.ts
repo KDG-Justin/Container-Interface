@@ -8,10 +8,10 @@ const imageRouter = Router();
 // GET /api/images
 imageRouter.get('/', getImages);
 
-// GET /api/image/:id
+// GET /api/images/:id
 imageRouter.get('/:id', getImageDetails); 
 
-// DELETE /api/image/:id
+// DELETE /api/images/:id
 imageRouter.delete("/:id", removeImage);
 
 

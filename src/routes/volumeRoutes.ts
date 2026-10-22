@@ -1,16 +1,19 @@
 import { Router } from "express";
-import { getVolumes, removeVolume } from "../controllers/volumeController";
+import { getVolumeDetails, getVolumes, removeVolume } from "../controllers/volumeController";
 
 
 const volumeRouter = Router();
 
 
-// Endpoints images
+// Endpoints volumes
 // GET /api/images
 volumeRouter.get('/', getVolumes);
 
-// DELETE /api/image/:name
+// DELETE /api/volumes/:name
 volumeRouter.delete("/:name", removeVolume);
+
+// GET /api/volumes/:name
+volumeRouter.get('/:name', getVolumeDetails)
 
 
 export default volumeRouter; 

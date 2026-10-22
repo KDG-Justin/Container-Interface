@@ -107,3 +107,70 @@ export async function removeVolume(req: Request, res: Response): Promise<Respons
     });
   }
 }
+
+
+// GET /api/volumes/:name
+export async function getVolumeDetails(req: Request, res: Response): Promise<Response> {
+  try {
+    const { name } = req.params;
+    const parsedName = z.string().parse(name);
+    const volume = docker.getVolume(parsedName);
+    const volData = await volume.inspect();
+    const containers = await docker.listContainers({ all: true });
+
+    const connectedContainers = containers
+      .filter((c: any) => 
+        c.Mounts && c.Mounts.some((m: any) => m.Name === volData.Name || m.Source === volData.Mountpoint)
+      )
+      .map((c: any) => ({
+        id: c.Id,
+        name: c.Names?.[0] ? c.Names[0].replace(/^\//, '') : 'Unnamed',
+      }));
+
+    const volumeDetail = {
+      name: volData.Name,
+      type: 'volume', 
+      source: volData.Name,
+      destination: volData.Mountpoint, 
+      rw: true,
+      driver: volData.Driver || 'local',
+      mountpoint: volData.Mountpoint,
+      containers: connectedContainers,
+    };
+
+    return res.json({
+      success: true,
+      data: volumeDetail,
+    });
+  } catch (error) {
+    console.error("Error with removing the volume:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid volume name",
+      });
+    }
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such volume"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Volume not found",
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: "Docker service is unavailable",
+    });
+  }
+}
