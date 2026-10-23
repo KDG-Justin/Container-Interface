@@ -115,7 +115,7 @@ export function ContainersScreen() {
               placeholder="Search container by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full md:w-80 mb-2 px-4 py-2.5 pl-10 rounded-xl bg-[#285A48]/30 border border-[#408A71]/40 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#B0E4CC] transition-colors"
+              className="w-full md:w-80 mb-2 mt-2 ml-2 px-4 py-2.5 pl-10 rounded-xl bg-[#285A48]/30 border border-[#408A71]/40 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-[#B0E4CC] transition-colors"
             />
           </div>
           <table className="w-full text-left text-sm text-gray-200">
@@ -139,7 +139,6 @@ export function ContainersScreen() {
                     key={container.id}
                     className="hover:bg-[#408A71]/15 transition-colors"
                   >
-                    {/* status badge */}
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
@@ -159,7 +158,6 @@ export function ContainersScreen() {
                       </span>
                     </td>
 
-                    {/* container name + id */}
                     <td className="px-6 py-4">
                       <div className="font-semibold text-white text-base">
                         {container.name}

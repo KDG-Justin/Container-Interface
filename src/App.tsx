@@ -11,6 +11,7 @@ import { ImagesScreen } from './components/screens/image/ImagesScreen';
 import { ImageDetailScreen } from './components/screens/image/ImageDetailScreen';
 import { VolumesScreen } from './components/screens/volume/VolumesScreen';
 import { VolumeDetailScreen } from './components/screens/volume/VolumeDetailScreen';
+import { NetworksScreen } from './components/screens/network/NetworksScreen';
 const queryClient = new QueryClient();
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
               <Route path="/images/:id" element={<ImageDetailScreen/>} />
               <Route path="/volumes" element={<VolumesScreen/>} />
               <Route path="/volumes/:name" element={<VolumeDetailScreen/>} />
-              <Route path="/networks" element={<div>networks</div>} />
+              <Route path="/networks" element={<NetworksScreen/>} />
             </Routes>
     </BrowserRouter>
   </QueryClientProvider>

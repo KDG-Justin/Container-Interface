@@ -30,7 +30,6 @@ export function ImageDetailScreen() {
   };
 
   const handleDeleteModal = () => {
-    setIsDeleting(true); 
     setDeleteModalOpen(true); 
   }
 

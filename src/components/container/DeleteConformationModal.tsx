@@ -42,7 +42,6 @@ export function DeleteConfirmationModal({
           </button>
         </div>
 
-        {/*content */}
         <p className="text-sm text-gray-200 leading-relaxed">
           Are you sure you want to remove {" "}
           <span className="font-semibold text-[#B0E4CC] font-mono px-1.5 py-0.5 rounded bg-[#091413]/60 border border-[#408A71]/30">

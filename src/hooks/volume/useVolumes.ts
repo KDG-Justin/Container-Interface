@@ -13,7 +13,7 @@ export function useVolumes() {
   } = useQuery<ContainerVolume[]>({
     queryKey: ["volumes"],
     queryFn: getVolumes,
-    refetchInterval: 3000,
+    refetchInterval: 5000,
   });
 
    const removeMutation = useMutation({
