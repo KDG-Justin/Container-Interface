@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  createContainer,
   getContainerDetails,
   getContainerLogs,
   getContainers,
@@ -14,8 +15,14 @@ const containerRouter = Router();
 // GET /api/containers
 containerRouter.get("/", getContainers);
 
+// POST /api/containers
+containerRouter.post("/", createContainer); 
+
 // GET /api/containers/id
 containerRouter.get("/:id", getContainerDetails);
+
+// DELETE /api/containers/:id
+containerRouter.delete("/:id", removeContainer);
 
 // POST /api/containers/:id/start
 containerRouter.post("/:id/start", startContainer);
@@ -25,8 +32,5 @@ containerRouter.post("/:id/stop", stopContainer);
 
 // GET /apu/containers/:id/logs
 containerRouter.get("/:id/logs", getContainerLogs);
-
-// DELETE /api/containers/:id
-containerRouter.delete("/:id", removeContainer);
 
 export default containerRouter;

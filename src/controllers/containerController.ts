@@ -55,6 +55,7 @@ export async function getContainers(
   }
 }
 
+// GET /api/containers/:id
 export async function getContainerDetails(
   req: Request,
   res: Response,
@@ -296,6 +297,76 @@ export async function removeContainer(
     });
   } catch (error) {
     console.error("Error with removing the container:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid container ID",
+      });
+    }
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such container"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Container not found",
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: "Docker service is unavailable",
+    });
+  }
+}
+
+
+// POST /api/containers
+export async function createContainer(req: Request, res: Response): Promise<Response> {
+  try {
+    const { name, image, port, volume } = req.body;
+
+    // Poorten parsen 8080:80 -> host: 8080, container: 80
+    const exposedPorts: any = {};
+    const portBindings: any = {};
+
+    if (port && port.includes(':')) {
+      const [hostPort, containerPort] = port.split(':');
+      const containerPortKey = `${containerPort}/tcp`;
+      exposedPorts[containerPortKey] = {};
+      portBindings[containerPortKey] = [{ HostPort: hostPort }];
+    }
+
+    const binds: string[] = [];
+    if (volume) {
+      binds.push(`${volume}:/data`);
+    }
+
+    const container = await docker.createContainer({
+      Image: image,
+      name: name || undefined,
+      ExposedPorts: exposedPorts,
+      HostConfig: {
+        PortBindings: portBindings,
+        Binds: binds.length > 0 ? binds : undefined,
+      },
+    });
+
+    await container.start();
+    return res.json({
+      success: true,
+      message: 'Container succesfully created and started',
+    });
+  } catch (error) {
+    console.error("Error with creating the container:", error);
 
     if (error instanceof z.ZodError) {
       return res.status(400).json({
