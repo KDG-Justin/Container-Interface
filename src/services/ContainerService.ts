@@ -13,6 +13,15 @@ export async function getContainers() {
   }
 }
 
+export async function createContainer(data: {name: string; image: string; port?: string; volume?: string;}): Promise<void> {
+  try{
+    await axios.post(`${API_BASE_URL}/containers`, data);
+  }catch (error){
+    console.error("Error with creating container: ", error);
+    throw error;  
+  }
+}
+
 export async function getContainerDetails(id: string): Promise<any> {
   try {
     const response = await axios.get(

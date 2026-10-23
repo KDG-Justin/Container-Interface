@@ -12,15 +12,27 @@ import { DeleteConfirmationModal } from "../../../components/container/DeleteCon
 import { useContainers } from "../../../hooks/container/useContainers";
 import { useNavigate } from "react-router-dom";
 import { LogsModal } from "../../container/LogsModal";
+import { AddContainerModal } from "../../container/AddContainerModal";
 
 export function ContainersScreen() {
   const navigate = useNavigate();
   const [activeActionId, setActiveActionId] = useState<string>("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [logsModalOpen, setLogsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [targetContainer, setTargetContainer] = useState<{id: string; name: string;} | null>();
-  const {containers, isLoading, isError, startContainer, stopContainer, removeContainer,} = useContainers();
+  const [targetContainer, setTargetContainer] = useState<{
+    id: string;
+    name: string;
+  } | null>();
+  const {
+    containers,
+    isLoading,
+    isError,
+    startContainer,
+    stopContainer,
+    removeContainer,
+  } = useContainers();
 
   const handleStart = async (id: string) => {
     try {
@@ -85,6 +97,13 @@ export function ContainersScreen() {
             Available docker container on local machine.
           </p>
         </div>
+        <button
+          onClick={() => setIsAddModalOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-[#B0E4CC] hover:bg-[#408A71] text-[#091413] font-semibold rounded-lg transition-all cursor-pointer whitespace-nowrap"
+        >
+          <Play className="size-4 fill-[#091413]" />
+          Deploy new Container
+        </button>
       </div>
 
       {isLoading && (
@@ -269,6 +288,10 @@ export function ContainersScreen() {
           setLogsModalOpen(false);
           setTargetContainer(null);
         }}
+      />
+      <AddContainerModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
       />
     </div>
   );

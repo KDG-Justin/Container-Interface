@@ -99,7 +99,7 @@ export function NetworksScreen() {
                         <span>{net.name}</span>
                       </div>
                       <div className="text-xs text-gray-400 font-mono mt-0.5">
-                        ID: {net.id}
+                        ID: {net.shortId}
                       </div>
                     </td>
 

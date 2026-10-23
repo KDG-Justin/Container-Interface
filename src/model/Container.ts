@@ -13,3 +13,10 @@ export interface ContainerItem{
   networks: Record<string, any>;
   env: string[];
 }
+
+export interface ContainerFormData {
+  name: string;
+  image: string;
+  port?: string;
+  volume?: string;
+}

@@ -1,6 +1,7 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import type { ContainerItem } from "../../model/Container";
+import type { ContainerFormData, ContainerItem } from "../../model/Container";
 import {
+  createContainer,
   getContainers,
   removeContainer,
   startContainer,
@@ -41,12 +42,26 @@ export function useContainers() {
     },
   });
 
+  const createMutation = useMutation({
+      mutationFn: (data: ContainerFormData) => createContainer({
+        name: data.name?.trim(),
+        image: data.image,
+        port: data.port?.trim() || undefined,
+        volume: data.volume || undefined,
+      }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['containers'] });
+      }
+    });
+  
+
   return {
     containers,
     isError,
     isLoading,
     startContainer: startMutation.mutateAsync,
     stopContainer: stopMutation.mutateAsync,
-    removeContainer: removeMutation.mutateAsync
+    removeContainer: removeMutation.mutateAsync,
+    createContainer: createMutation
   };
 }
