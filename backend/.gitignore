@@ -1,0 +1,39 @@
+# Dependency mappen
+node_modules/
+jspm_packages/
+
+# TypeScript gecompileerde output map
+dist/
+build/
+
+# Omgevingsvariabelen, Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Besturingssysteem bestanden
+.DS_Store
+Thumbs.db
+
+# VS Code, IDE specifieke mappen
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Tijdelijke bestanden, cache
+.npm
+.eslintcache
