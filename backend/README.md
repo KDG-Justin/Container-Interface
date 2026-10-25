@@ -21,23 +21,6 @@ A lightweight Node.js & TypeScript REST API that connects directly to the local 
 * **REST API Endpoints:** 
   * `GET /` — API Status & Health Check
   * `GET /api/containers` — Fetch all local Docker containers (both running and stopped)
+  * ...
 
 ---
-
-## 📋 Prerequisites
-
-Before running this project, ensure you have the following installed on your machine:
-
-1. **[Node.js](https://nodejs.org/)** (v18 or higher) & `npm`
-2. **[Docker Desktop](https://www.docker.com/products/docker-desktop/)** (Must be running in the background)
-
----
-
-## 📦 Installation
-
-1. **Clone or download the project repository:**
-   ```bash
-   git clone <your-repository-url>
-   cd docker-backend
-   npm i
-   npm run dev
