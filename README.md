@@ -42,7 +42,7 @@ cd Container-Interface
 
 #### 💻 Windows
 
-Run the following commands from a Windows terminal, such as PowerShell or Command Prompt:
+Run the following commands from the project root directory:
 
 1. **Installation:**
 
