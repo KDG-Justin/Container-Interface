@@ -116,7 +116,7 @@ export function ContainersScreen() {
       {isError && (
         <div className="p-4 bg-red-900/40 border border-red-500/50 rounded-lg text-red-200">
           <p className="font-semibold">Error with getting containers:</p>
-          <p className="text-sm mt-1">Docker desktop might be offline.</p>
+          <p className="text-sm mt-1">Docker engine might be offline.</p>
         </div>
       )}
 

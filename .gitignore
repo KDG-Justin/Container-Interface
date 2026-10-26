@@ -23,9 +23,23 @@ dist-ssr
 *.sln
 *.sw?
 
-# Omgevingsvariabelen, Secrets
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# TypeScript gecompileerde output map
+dist/
+build/
+
+# Besturingssysteem bestanden
+.DS_Store
+Thumbs.db
+
+# VS Code, IDE specifieke mappen
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Tijdelijke bestanden, cache
+.npm
+.eslintcache

@@ -1,0 +1,13 @@
+{
+  "name": "docker-manager",
+  "private": true,
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "dev": "node scripts/dev.mjs",
+    "setup:wsl": "set BACKEND_RUNTIME=wsl&& node scripts/setup.mjs",
+    "dev:wsl": "set BACKEND_RUNTIME=wsl&& node scripts/dev.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
+}

@@ -1,4 +1,4 @@
-# Docker Management Dashboard - Frontend
+# Docker Container Web Interface - Frontend
 
 A modern, responsive, and user-friendly web interface built with React, TypeScript, and Tailwind CSS. This application allows users to monitor and manage local Docker resources (Containers, Images, Volumes, and Networks) through a clean dashboard, addressing common CLI pain points like dependency conflicts during resource cleanup.
 
@@ -26,20 +26,3 @@ A modern, responsive, and user-friendly web interface built with React, TypeScri
 * **Real-time Updates:** Automatic polling and cache invalidation via React Query for near real-time status monitoring.
 
 ---
-
-## 📋 Prerequisites
-
-Ensure you have the following set up before starting the frontend:
-
-1. **[Node.js](https://nodejs.org/)** (v18 or higher) & `npm`
-2. **Docker Dashboard Backend:** The Express/TypeScript API service must be running locally on `http://localhost:3000`.
-
----
-
-## 📦 Setup
-
-1. **Navigate to the frontend project directory:**
-   ```bash
-   cd docker-frontend
-   npm install
-   npm run dev
