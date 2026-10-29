@@ -90,6 +90,7 @@ export function ImagesScreen() {
                           <span
                             key={c.id}
                             className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#408A71]/30 border border-[#408A71]/50 text-xs text-white font-medium"
+                            onClick={() => navigate(`/containers/${c.id}`)}
                           >
                             <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
                             {c.name}

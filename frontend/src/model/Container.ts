@@ -20,3 +20,8 @@ export interface ContainerFormData {
   port?: string;
   volume?: string;
 }
+
+export interface ContainerStats {
+  cpu: String; 
+  memory: string; 
+}

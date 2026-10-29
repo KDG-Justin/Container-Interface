@@ -35,6 +35,18 @@ export async function getContainerDetails(id: string): Promise<any> {
   }
 }
 
+export async function getContainerStats(id: string): Promise<any> {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/containers/${encodeURIComponent(id)}/stats`,
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Error with loading container stats via API:", error);
+    throw error;
+  }
+}
+
 export async function startContainer(id: string): Promise<void> {
   try {
     await axios.post(

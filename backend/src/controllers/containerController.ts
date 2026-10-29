@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import docker from "../config/docker";
 import { z } from "zod";
+import { memoryUsage } from "process";
 
 // GET /api/containers
 export async function getContainers(
@@ -31,6 +32,82 @@ export async function getContainers(
     });
   } catch (error) {
     console.error("Error with getting containers:", error);
+
+    const dockerError = error as {
+      statusCode?: number;
+      reason?: string;
+      message?: string;
+    };
+
+    if (
+      dockerError.statusCode === 404 ||
+      dockerError.reason === "no such container"
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "Container not found",
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: "Docker service is unavailable",
+    });
+  }
+}
+
+// GET /api/containers/:id/stats
+export async function getContainerstats(
+  req: Request,
+  res: Response,
+): Promise<Response> {
+  try {
+    const { id } = req.params;
+    const parsedId = z.string().parse(id);
+    const container = docker.getContainer(parsedId);
+    const data = await container.stats({ stream: false });
+
+    let cpuPercent = 0.0;
+    const cpuStats = data.cpu_stats;
+    const preCpuStats = data.precpu_stats;
+
+    if (cpuStats && preCpuStats) {
+      const cpuDelta = cpuStats.cpu_usage.total_usage - preCpuStats.cpu_usage.total_usage;
+      const systemDelta = cpuStats.system_cpu_usage - preCpuStats.system_cpu_usage;
+      
+      // aantal cpus
+      const onlineCpus = cpuStats.online_cpus || (cpuStats.cpu_usage.percpu_usage ? cpuStats.cpu_usage.percpu_usage.length : 1);
+
+      if (systemDelta > 0 && cpuDelta > 0) {
+        cpuPercent = (cpuDelta / systemDelta) * onlineCpus * 100;
+      }
+    }
+
+    const memUsageMB = (data.memory_stats.usage / (1024 * 1024)).toFixed(2);
+    const memLimitMB = (data.memory_stats.limit / (1024 * 1024)).toFixed(2);
+
+    const memUsage = data.memory_stats?.usage || 0;
+    const memLimit = data.memory_stats?.limit || 1;
+    const memPercent = ((memUsage / memLimit) * 100).toFixed(1);
+
+    const formattedContainer = {
+      cpu: `${cpuPercent.toFixed(2)}%`,
+      memory: `${memUsageMB} MB / ${memLimitMB} MB (${memPercent}%)`
+    };
+
+    return res.json({
+      success: true,
+      data: formattedContainer,
+    });
+  } catch (error) {
+    console.error("Error with getting container stats:", error);
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid container ID",
+      });
+    }
 
     const dockerError = error as {
       statusCode?: number;

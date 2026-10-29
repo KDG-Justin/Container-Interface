@@ -123,6 +123,7 @@ export function VolumesScreen() {
                               <span
                                 key={c.id}
                                 className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#408A71]/30 border border-[#408A71]/50 text-xs text-[#B0E4CC] font-mono"
+                                onClick={() => navigate(`/containers/${c.id}`)}
                               >
                                 <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
                                 {c.name}

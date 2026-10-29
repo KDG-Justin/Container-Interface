@@ -1,11 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  AlertCircle,
   ArrowLeft,
   Clock,
   Container,
+  Cpu,
   Database,
   Eye,
   EyeOff,
+  HardDrive,
   ImageIcon,
   Layers,
   Network,
@@ -13,12 +16,14 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useContainer } from "../../../hooks/container/useContainer";
+import { useContainerStats } from "../../../hooks/container/useContainerStats";
 
 export function ContainerDetailScreen() {
   const { id } = useParams<string>();
   const navigate = useNavigate();
   const { container, isLoading, isError } = useContainer(id!);
   const [showId, setShowId] = useState(false);
+  const { stats, isStatsLoading } = useContainerStats(id!);
 
   if (isLoading) {
     return (
@@ -122,6 +127,50 @@ export function ContainerDetailScreen() {
         </div>
       </div>
 
+      <div className="p-6 rounded-xl border border-[#408A71]/30 bg-[#285A48]/30 space-y-4">
+        <div className="flex items-center gap-2 text-[#B0E4CC] font-bold text-base border-b border-[#408A71]/30 pb-3">
+          <Cpu className="size-5" />
+          <h2>Resource Usage</h2>
+        </div>
+
+        {!isRunning ? (
+          <div className="flex items-center gap-3 p-4 rounded-lg bg-[#091413]/50 border border-amber-500/30 text-amber-200 text-sm">
+            <AlertCircle className="size-5 text-amber-400 shrink-0" />
+            <span>
+              Container is currently stopped. Start the container to view live
+              CPU and memory usage statistics.
+            </span>
+          </div>
+        ) : isStatsLoading ? (
+          <div className="flex items-center gap-2 text-sm text-gray-300 py-2">
+            <RefreshCcw className="size-4 animate-spin text-[#B0E4CC]" />
+            <span>Loading resource usage stats...</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="p-4 rounded-lg bg-[#091413]/50 border border-[#408A71]/30 space-y-1">
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <Cpu className="size-4 text-[#B0E4CC]" />
+                <span>CPU Statistics</span>
+              </div>
+              <div className="font-mono text-emerald-200 text-sm break-all pt-1">
+                {stats?.cpu ?? "No data available"}
+              </div>
+            </div>
+
+            <div className="p-4 rounded-lg bg-[#091413]/50 border border-[#408A71]/30 space-y-1">
+              <div className="flex items-center gap-2 text-xs text-gray-400">
+                <HardDrive className="size-4 text-[#B0E4CC]" />
+                <span>Memory Statistics</span>
+              </div>
+              <div className="font-mono text-emerald-200 text-sm break-all pt-1">
+                {stats?.memory ?? "No data available"}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="p-6 rounded-xl border border-[#408A71]/30 bg-[#285A48]/30 space-y-4">
           <div className="flex items-center gap-2 text-[#B0E4CC] font-bold text-base border-b border-[#408A71]/30 pb-3">
@@ -171,7 +220,8 @@ export function ContainerDetailScreen() {
                 Port Bindings
               </span>
               <div>
-                {container.portsDetail && Object.keys(container.portsDetail).length > 0 ? (
+                {container.portsDetail &&
+                Object.keys(container.portsDetail).length > 0 ? (
                   Object.keys(container.portsDetail).map((containerPort) => {
                     const binding = container.portsDetail[containerPort];
                     const hostPort = binding?.[0]?.HostPort

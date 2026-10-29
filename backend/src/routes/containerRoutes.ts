@@ -4,6 +4,7 @@ import {
   getContainerDetails,
   getContainerLogs,
   getContainers,
+  getContainerstats,
   removeContainer,
   startContainer,
   stopContainer,
@@ -30,7 +31,10 @@ containerRouter.post("/:id/start", startContainer);
 // POST /api/containers/:id/stop
 containerRouter.post("/:id/stop", stopContainer);
 
-// GET /apu/containers/:id/logs
+// GET /api/containers/:id/logs
 containerRouter.get("/:id/logs", getContainerLogs);
+
+// GET /api/containers/:id/stats
+containerRouter.get("/:id/stats", getContainerstats);
 
 export default containerRouter;
